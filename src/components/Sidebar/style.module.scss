@@ -1,0 +1,56 @@
+.container {
+  padding-left: 25px;
+  padding-right: 25px;
+  padding-top: 20px;
+  max-width: 300px;
+  .menu {
+    border-bottom: 2px solid #bd613c;
+    margin-bottom: 30px;
+    &:last-child {
+      border-bottom: 0;
+    }
+    .title {
+      h1 {
+        font-size: 24px;
+        font-weight: 400;
+      }
+    }
+    .list {
+      list-style-type: none;
+      margin-top: 30px;
+      margin-bottom: 28px;
+      .item {
+        width: 250px;
+        border-radius: 10px;
+        height: 50px;
+        line-height: 50px;
+        background-color: #fff;
+        color: #bd613c;
+        &.active {
+          background-color: #bd613c;
+          color: #fff;
+        }
+        .option-wrapper {
+          margin-left: 22px;
+          display: flex;
+          height: 100%;
+          display: flex;
+          align-items: center;
+          .icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            width: 32px;
+            height: 32px;
+            margin-right: 16px;
+          }
+          span {
+            line-height: 30px;
+            font-size: 20px;
+          }
+        }
+      }
+    }
+  }
+}
