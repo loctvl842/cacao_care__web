@@ -2,7 +2,7 @@ import styles from "./style.module.scss";
 import classNames from "classnames/bind";
 
 // components
-import { Sidebar } from "~/components";
+import { Sidebar, Chart, Rightbar } from "~/components";
 
 let cx = classNames.bind(styles);
 
@@ -11,6 +11,8 @@ const Home = () => {
     <div className={cx("container")}>
       <div className={cx("wrapper")}>
         <Sidebar />
+        <Chart />
+        <Rightbar />
       </div>
     </div>
   );

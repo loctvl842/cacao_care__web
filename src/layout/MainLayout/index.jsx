@@ -12,15 +12,17 @@ const MainLayout = ({ components }) => {
   return (
     <div className={cx("container")}>
       {/* header here */}
-      <Header />
+      <div className={cx("header-wrapper")}>
+        <Header />
+      </div>
       <div className={cx("content-wrapper")}>
         {Array.isArray(components)
           ? components.map((c) => <Fragment key={uuidv4()}>{c}</Fragment>)
           : components}
       </div>
       {/* footer here */}
-      <br />
-      <br />
+      {/* <br /> */}
+      {/* <br /> */}
     </div>
   );
 };

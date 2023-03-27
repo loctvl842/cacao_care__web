@@ -3,6 +3,7 @@
   padding-right: 25px;
   padding-top: 20px;
   max-width: 300px;
+  flex-shrink: 0;
   .menu {
     border-bottom: 2px solid #bd613c;
     margin-bottom: 30px;
@@ -26,9 +27,18 @@
         line-height: 50px;
         background-color: #fff;
         color: #bd613c;
+        cursor: pointer;
+        border: 1px solid #fff;
+        &:hover {
+          background-color: #fafafa;
+          border-color: #f0f0f0;
+        }
         &.active {
           background-color: #bd613c;
           color: #fff;
+          &:hover {
+            background-color: #ac502b;
+          }
         }
         .option-wrapper {
           margin-left: 22px;

@@ -1,0 +1,17 @@
+$header-height: 80px;
+
+.container {
+  height: 100vh;
+  .header-wrapper {
+    height: $header-height;
+    top: 0;
+    left: 0;
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+  }
+  .content-wrapper {
+    height: 100%;
+    padding-top: $header-height;
+  }
+}
