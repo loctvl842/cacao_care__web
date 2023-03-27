@@ -83,44 +83,6 @@ const EnvironmentFactor = ({ factor }) => {
     };
   }, [client, REACT_APP_IO_KEY, REACT_APP_IO_USERNAME, factor]);
 
-  useEffect(() => {
-    console.log("rendered");
-    const client = mqtt.connect(
-      `wss://io.adafruit.com:443/mqtt/?t=${new Date().getTime()}`,
-      {
-        clientId: `mqtt_${factor.feedKey}_${uuidv4()}`,
-        username: REACT_APP_IO_USERNAME,
-        password: REACT_APP_IO_KEY,
-        clean: true,
-      }
-    );
-    client.on("connect", () => {
-      console.log("connected");
-      if (client.connected) {
-        client.subscribe(
-          `${REACT_APP_IO_USERNAME}/feeds/${factor.feedKey}`,
-          (err) => {
-            if (err) console.log(err);
-          }
-        );
-      }
-    });
-
-    client.on("error", (err) => {
-      console.log("mqtt error: ", err);
-      client.end();
-    });
-
-    client.on("message", (_, msg) => {
-      const data = JSON.parse(msg.toString());
-      setValue(data);
-    });
-    return () => {
-      if (client && client.connected) {
-        client.end();
-      }
-    };
-  }, [factor.feedKey, REACT_APP_IO_USERNAME, REACT_APP_IO_KEY]);
   return (
     <li className={cx("item")} style={{ backgroundColor: factor.color }}>
       <div className={cx("value-box")}>
