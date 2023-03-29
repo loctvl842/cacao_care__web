@@ -1,23 +1,28 @@
 import styles from "./style.module.scss";
 import classNames from "classnames/bind";
 
+import { SocketContext } from "~/socket";
+
 import { useState, useEffect, useContext } from "react";
 import { PulseLoader } from "react-spinners";
-
-import { SocketContext } from "~/socket";
 import axios from "axios";
+import dayjs from "dayjs";
 
 let cx = classNames.bind(styles);
 
 const Device = ({ feed }) => {
   const { REACT_APP_IO_USERNAME, REACT_APP_IO_KEY } = process.env;
   const [value, setValue] = useState(null);
+  const [createdAt, setCreatedAt] = useState("");
   const socket = useContext(SocketContext);
 
   useEffect(() => {
     const topic = `${REACT_APP_IO_USERNAME}/feeds/${feed.key}`;
-    socket.on(topic, (data) => setValue(data));
-  }, []);
+    socket.on(topic, (data, createdAt) => {
+      setValue(data);
+      setCreatedAt(createdAt);
+    });
+  }, [REACT_APP_IO_USERNAME, socket, feed.key]);
 
   useEffect(() => {
     const fetchLast = async () => {
@@ -30,9 +35,10 @@ const Device = ({ feed }) => {
         }
       );
       setValue(res.data.value);
+      setCreatedAt(res.data.created_at);
     };
     fetchLast();
-  }, []);
+  }, [REACT_APP_IO_USERNAME, REACT_APP_IO_KEY, feed.key]);
 
   return (
     <div className={cx("item")}>
@@ -47,7 +53,9 @@ const Device = ({ feed }) => {
       </div>
       <div className={cx("info")}>
         <span className={cx("name")}>{feed.name}</span>
-        <span className={cx("date")}>March 25, 08:00 pm</span>
+        <span className={cx("date")}>
+          {dayjs(createdAt).format("MMMM D, HH:mm a")}
+        </span>
       </div>
     </div>
   );

@@ -39,10 +39,9 @@ const options = {
   },
 };
 
-const labels = ["January", "February", "March", "April", "May", "June", "July"];
-
 let cx = classNames.bind(styles);
 
+let labels = [];
 const Chart = () => {
   const { REACT_APP_IO_USERNAME, REACT_APP_IO_KEY } = process.env;
   const [data, setData] = useState({
@@ -51,8 +50,8 @@ const Chart = () => {
       {
         label: "Dataset 1",
         data: labels.map(() => 1),
-        borderColor: "rgb(255, 99, 132)",
-        backgroundColor: "rgba(255, 99, 132, 0.5)",
+        borderColor: "#DFA67B",
+        backgroundColor: "#DFA67B",
       },
     ],
   });
@@ -61,7 +60,7 @@ const Chart = () => {
     const fetchData = async () => {
       try {
         const res = await axios.get(
-          `https://io.adafruit.com/api/v2/${REACT_APP_IO_USERNAME}/feeds/dht20-temp/data?limit=10`,
+          `https://io.adafruit.com/api/v2/${REACT_APP_IO_USERNAME}/feeds/dht20-humi/data?limit=10`,
           {
             headers: {
               "X-AIO-Key": REACT_APP_IO_KEY,

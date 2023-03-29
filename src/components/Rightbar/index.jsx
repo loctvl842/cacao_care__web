@@ -17,7 +17,6 @@ const Rightbar = () => {
     const fetchFeeds = async () => {
       try {
         const res = await axios.get(`/api/v2/${REACT_APP_IO_USERNAME}/feeds`);
-        console.log(res.data);
         setFeeds(res.data);
       } catch (e) {
         console.log(e);
