@@ -7,14 +7,18 @@ import { FiSettings } from "react-icons/fi";
 import { SiAdafruit } from "react-icons/si";
 import { AiOutlineMenu } from "react-icons/ai";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 let cx = classNames.bind(styles);
 
 const Sidebar = () => {
+  const navigate = useNavigate();
   const [visible, setVisible] = useState(false);
+
   const handleMenuBtnClick = () => {
     setVisible((visible) => !visible);
   };
+
   return (
     <div className={cx("container", { visible: visible })}>
       <div className={cx("menu-btn")} onClick={handleMenuBtnClick}>
@@ -56,7 +60,7 @@ const Sidebar = () => {
           <h1>Account</h1>
         </div>
         <ul className={cx("list")}>
-          <li className={cx("item")}>
+          <li className={cx("item")} onClick={() => navigate("/login")}>
             <div className={cx("option-wrapper")}>
               <div className={cx("icon")}>
                 <SiAdafruit />

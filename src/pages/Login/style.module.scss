@@ -1,48 +1,91 @@
 .container {
   padding: 0;
   margin: 0;
+  width: 100vw;
   height: 100vh;
+  display: flex;
 }
 
 .left {
-  width: 50vw;
+  flex: 1;
   float: left;
-  .form-wrapper {
-    width: 100%;
-    padding-left: 50px;
-    height: 100vh;
-    display: flex;
-    .form-data {
-      margin: auto -0;
-      .form-control {
-        border: 1px solid #aaa;
-        height: 60px;
-        width: 500px;
-        display: flex;
-        align-items: center;
-        padding: 20px;
-        border-radius: 10px;
-        input {
-          outline: none;
-          border: none;
-          width: 100%;
-          height: 100%;
-          font-size: 18px;
-        }
+  display: flex;
+}
+
+.form-wrapper {
+  width: 100%;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .form-data {
+    width: 500px;
+    .form-control {
+      width: 100%;
+      border: 1px solid #aaa;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      padding: 20px;
+      border-radius: 10px;
+      input {
+        outline: none;
+        border: none;
+        width: 100%;
+        height: 150%;
+        padding-left: 5px;
+        padding-right: 5px;
+        font-size: 18px;
       }
-      .form-control + .form-control {
-        margin-top: 20px;
+    }
+    .form-control + .form-control {
+      margin-top: 20px;
+    }
+    .submit-btn-wrapper {
+      width: 100%;
+      position: relative;
+      margin-top: 20px;
+      display: flex;
+      justify-content: center;
+      .submit-btn {
+        border: none;
+        outline: none;
+        width: 50%;
+        height: 60px;
+        border-radius: 20px;
+        cursor: pointer;
+        font-size: 20px;
+        font-weight: 700;
+        background: linear-gradient(
+            180deg,
+            rgba(184, 98, 27, 0) 0%,
+            #b8621b 100%
+          ),
+          linear-gradient(180deg, #b8621b 0%, rgba(184, 98, 27, 0) 100%);
+        color: #fff;
+        &:hover {
+          opacity: 0.9;
+        }
       }
     }
   }
 }
-
 .right {
-  width: 50vw;
-  height: 100%;
   float: right;
+  flex: 1;
+}
+
+.logo {
+  display: flex;
+  justify-content: center;
+  margin: 50px auto;
+}
+
+.img-wrapper {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
   img {
-    float: right;
     height: 100%;
     object-fit: contain;
   }
