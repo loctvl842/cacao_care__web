@@ -5,8 +5,10 @@
   align-items: center;
   margin-top: 15px;
   cursor: pointer;
+  background: linear-gradient(180deg, rgba(184, 98, 27, 0) 0%, #b8621b 100%),
+    linear-gradient(180deg, #b8621b 0%, rgba(184, 98, 27, 0) 100%);
   &:hover {
-    background-color: #ac502b;
+    opacity: 0.9;
   }
   .value-box {
     background-color: #f6f1f1;
@@ -18,10 +20,10 @@
     align-items: center;
     margin: 10px;
     span {
-      font-weight: 400;
+      font-weight: 600;
       line-height: 30px;
       font-size: 16px;
-      color: #bd613c;
+      color: #1daad0;
     }
   }
   .info {
