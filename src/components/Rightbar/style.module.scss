@@ -17,50 +17,26 @@
     }
   }
   .list {
+    overflow-y: scroll;
+    max-height: calc(95px * 4 + 35px);
     padding: 20px;
     list-style-type: none;
-    .item {
-      background: #1daad0;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      margin-top: 15px;
-      .value-box {
-        background-color: #f6f1f1;
-        width: 60px;
-        height: 60px;
-        border-radius: 10px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-top: 10px;
-        margin-left: 10px;
-        margin-bottom: 10px;
-        span {
-          font-weight: 400;
-          line-height: 30px;
-          font-size: 16px;
-          color: #146c94;
-        }
-      }
-      .info {
-        margin-left: 12px;
-        span {
-          display: block;
-        }
-        .name {
-          font-weight: 400;
-          line-height: 40px;
-          font-size: 20px;
-          color: #fff;
-        }
-        .date {
-          font-weight: 400;
-          font-size: 20px;
-          line-height: 30px;
-          color: #002b5b;
-        }
-      }
+    scroll-margin: 30px;
+    &::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    &::-webkit-scrollbar-track {
+      display: none;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      border-radius: 50px;
+      background-color: transparent;
+      transition: background-color 0.9s ease-out;
+    }
+    &:hover::-webkit-scrollbar-thumb {
+      background-color: #aaa;
     }
   }
 }

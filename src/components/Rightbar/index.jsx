@@ -1,108 +1,34 @@
 import styles from "./style.module.scss";
 import classNames from "classnames/bind";
 
-import { useState, useEffect } from "react";
-import axios from "axios";
-import mqtt from "precompiled-mqtt";
 import { v4 as uuidv4 } from "uuid";
-import { PulseLoader } from "react-spinners";
+
+// components
+import { Device } from "~/components";
+// Environment factors
+import { factors } from "./factors";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { io } from "socket.io-client";
 
 let cx = classNames.bind(styles);
-
-const factors = [
-  {
-    color: "#1daad0",
-    name: "Humidity",
-    unit: "%",
-    feedKey: "dht20-humi",
-  },
-  {
-    color: "#b8621b",
-    name: "Moisture",
-    unit: "%",
-    feedKey: "yolo-moisture",
-  },
-  {
-    color: "#7AA874",
-    name: "Light",
-    unit: "%",
-    feedKey: "yolo-light",
-  },
-  {
-    color: "#DFA67B",
-    name: "Temperature",
-    unit: "°C",
-    feedKey: "dht20-temp",
-  },
-];
-
-const EnvironmentFactor = ({ factor }) => {
-  const { REACT_APP_IO_USERNAME, REACT_APP_IO_KEY } = process.env;
-  const [value, setValue] = useState(null);
-  const [client, setClient] = useState(null);
-
-  useEffect(() => {
-    setClient(
-      mqtt.connect("wss://io.adafruit.com:443/mqtt/", {
-        username: REACT_APP_IO_USERNAME,
-        password: REACT_APP_IO_KEY,
-      })
-    );
-  }, [REACT_APP_IO_KEY, REACT_APP_IO_USERNAME]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const res = await axios.get(
-        `https://io.adafruit.com/api/v2/${REACT_APP_IO_USERNAME}/feeds/${factor.feedKey}/data/last`,
-        {
-          headers: {
-            "X-AIO-Key": REACT_APP_IO_KEY,
-          },
-        }
-      );
-      setValue(res.data.value);
-    };
-    fetchData();
-  }, [REACT_APP_IO_USERNAME, REACT_APP_IO_KEY, factor]);
-
-  useEffect(() => {
-    if (client == null) {
-      return;
-    }
-    client.on("connect", () => {
-      console.log("connected");
-      client.subscribe(`${REACT_APP_IO_USERNAME}/feeds/${factor.feedKey}`);
-    });
-
-    client.on("message", (_, message) => {
-      const data = JSON.parse(message.toString());
-      setValue(data);
-    });
-    return () => {
-      client.end();
-    };
-  }, [client, REACT_APP_IO_KEY, REACT_APP_IO_USERNAME, factor]);
-
-  return (
-    <li className={cx("item")} style={{ backgroundColor: factor.color }}>
-      <div className={cx("value-box")}>
-        <PulseLoader color={factor.color} size={5} loading={value === null} />
-        {value !== null && (
-          <span style={{ color: factor.color }}>
-            {value}
-            {factor.unit}
-          </span>
-        )}
-      </div>
-      <div className={cx("info")}>
-        <span className={cx("name")}>{factor.name}</span>
-        <span className={cx("date")}>March 25, 08:00 pm</span>
-      </div>
-    </li>
-  );
-};
-
+var socket;
 const Rightbar = () => {
+  const { REACT_APP_IO_USERNAME, REACT_APP_SOCKET_ENDPOINT } = process.env;
+  const [feeds, setFeeds] = useState([]);
+  useEffect(() => {
+    const fetchFeeds = async () => {
+      try {
+        socket = io(REACT_APP_SOCKET_ENDPOINT);
+        const res = await axios.get(`/api/v2/${REACT_APP_IO_USERNAME}/feeds`);
+        console.log(res.data);
+        setFeeds(res.data);
+      } catch (e) {
+        console.log(e);
+      }
+    };
+    fetchFeeds();
+  }, []);
   return (
     <div className={cx("container")}>
       <div className={cx("devices")}>
@@ -110,8 +36,8 @@ const Rightbar = () => {
           <h1>Devices</h1>
         </div>
         <ul className={cx("list")}>
-          {factors.map((factor) => (
-            <EnvironmentFactor factor={factor} key={uuidv4()} />
+          {feeds.map((feed) => (
+            <Device feed={feed} socket={socket} key={uuidv4()} />
           ))}
         </ul>
       </div>

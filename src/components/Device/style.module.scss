@@ -1,0 +1,45 @@
+.item {
+  background: #bd613c;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  margin-top: 15px;
+  cursor: pointer;
+  &:hover {
+    background-color: #ac502b;
+  }
+  .value-box {
+    background-color: #f6f1f1;
+    width: 60px;
+    height: 60px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+    span {
+      font-weight: 400;
+      line-height: 30px;
+      font-size: 16px;
+      color: #bd613c;
+    }
+  }
+  .info {
+    margin-left: 12px;
+    span {
+      display: block;
+    }
+    .name {
+      font-weight: 400;
+      line-height: 40px;
+      font-size: 20px;
+      color: #fff;
+    }
+    .date {
+      font-weight: 400;
+      font-size: 20px;
+      line-height: 30px;
+      color: #002b5b;
+    }
+  }
+}

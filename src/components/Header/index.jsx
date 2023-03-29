@@ -10,7 +10,7 @@ const Header = () => {
   return (
     <div className={cx("container")}>
       <div className={cx("left")}>
-        <img src="/logo.png" alt="" />
+        <img src="/assets/logo/logo.png" alt="" />
       </div>
       <div className={cx("right")}>
         <div className={cx("notification")}>
