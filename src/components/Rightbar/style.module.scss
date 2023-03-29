@@ -1,7 +1,9 @@
 .container {
   width: 350px;
+  max-width: 350px;
   border-radius: 10px;
-  flex-shrink: 0;
+  flex: 1;
+  flex-basis: 300px;
 }
 
 .devices {
