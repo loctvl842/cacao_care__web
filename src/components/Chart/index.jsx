@@ -16,6 +16,8 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
 
+let cx = classNames.bind(styles);
+
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -40,7 +42,17 @@ const options = {
   },
 };
 
-let cx = classNames.bind(styles);
+const initData = {
+  labels: [],
+  datasets: [
+    {
+      label: "Dataset 1",
+      data: [1],
+      borderColor: "#DFA67B",
+      backgroundColor: "#DFA67B",
+    },
+  ],
+};
 
 const generateChartData = (data) => ({
   labels: data.map((fd) => {
@@ -60,30 +72,18 @@ const generateChartData = (data) => ({
   ],
 });
 
-let labels = [];
-
 const Chart = () => {
   const { user } = useSelector((state) => state.auth);
-  const [data, setData] = useState({
-    labels,
-    datasets: [
-      {
-        label: "Dataset 1",
-        data: labels.map(() => 1),
-        borderColor: "#DFA67B",
-        backgroundColor: "#DFA67B",
-      },
-    ],
-  });
+  const { currentFeed } = useSelector((state) => state.feed);
+  const [data, setData] = useState(initData);
 
   useEffect(() => {
-    console.log(user);
-    if (user === null) return;
+    if (user === null || currentFeed === null) return;
 
     const fetchFeedData = async () => {
       try {
         const res = await axios.get(
-          `/api/v2/${user.username}/feeds/dht20-humi/data?limit=10`,
+          `/api/v2/${user.username}/feeds/${currentFeed.key}/data?limit=10`,
           {
             headers: {
               "X-AIO-Key": user.active_key,
@@ -97,7 +97,7 @@ const Chart = () => {
       }
     };
     fetchFeedData();
-  }, [user]);
+  }, [user, currentFeed]);
 
   return (
     <div className={cx("container")}>
