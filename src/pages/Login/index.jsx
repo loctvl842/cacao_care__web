@@ -48,6 +48,7 @@ const Login = () => {
       });
       if (res.data.success) {
         dispatch(authSuccess(input_data));
+        localStorage.setItem("user", JSON.stringify(input_data));
         navigate("/");
       }
     } catch (e) {

@@ -11,7 +11,7 @@ const SocketProvider = ({ children }) => {
     socket.on("connect", () => {
       console.log("Connected to server through Socket.io");
     });
-  }, []);
+  }, [socket]);
   return (
     <SocketContext.Provider value={socket}>{children}</SocketContext.Provider>
   );
