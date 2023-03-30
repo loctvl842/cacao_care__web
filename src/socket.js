@@ -1,7 +1,6 @@
 import { createContext, useEffect } from "react";
 import { io } from "socket.io-client";
 
-// export const socket = io("https://cacao-care.herokuapp.com");
 const SocketContext = createContext();
 
 const SocketProvider = ({ children }) => {
@@ -9,7 +8,7 @@ const SocketProvider = ({ children }) => {
   const socket = io("https://cacao-care.herokuapp.com");
   useEffect(() => {
     socket.on("connect", () => {
-      console.log("Connected to server through Socket.io");
+      console.log("Connected to server successfully");
     });
   }, [socket]);
   return (
