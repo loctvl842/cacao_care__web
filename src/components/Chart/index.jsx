@@ -40,25 +40,28 @@ const options = {
   },
 };
 
-const fetchFeedData = async (user) => {
-  try {
-    const res = await axios.get(
-      `https://io.adafruit.com/api/v2/${user.username}/feeds/dht20-humi/data?limit=10`,
-      {
-        headers: {
-          "X-AIO-Key": user.active_key,
-        },
-      }
-    );
-    return res.data.reverse();
-  } catch (e) {
-    console.log(e);
-  }
-};
-
 let cx = classNames.bind(styles);
 
+const generateChartData = (data) => ({
+  labels: data.map((fd) => {
+    const createdDate = fd.created_at;
+    const date = new Date(createdDate);
+    const m = date.getUTCMinutes();
+    const s = date.getUTCSeconds();
+    return m + ":" + s;
+  }),
+  datasets: [
+    {
+      label: data[0].feed_key,
+      data: data.map((fd) => fd.value),
+      borderColor: "#DFA67B",
+      backgroundColor: "#DFA67B",
+    },
+  ],
+});
+
 let labels = [];
+
 const Chart = () => {
   const { user } = useSelector((state) => state.auth);
   const [data, setData] = useState({
@@ -74,26 +77,26 @@ const Chart = () => {
   });
 
   useEffect(() => {
+    console.log(user);
     if (user === null) return;
-    const data = fetchFeedData(user);
 
-    setData({
-      labels: data.map((d) => {
-        const createdDate = d.created_at;
-        const date = new Date(createdDate);
-        const m = date.getUTCMinutes();
-        const s = date.getUTCSeconds();
-        return m + ":" + s;
-      }),
-      datasets: [
-        {
-          label: data[0].feed_key,
-          data: data.map((d) => d.value),
-          borderColor: "#DFA67B",
-          backgroundColor: "#DFA67B",
-        },
-      ],
-    });
+    const fetchFeedData = async () => {
+      try {
+        const res = await axios.get(
+          `/api/v2/${user.username}/feeds/dht20-humi/data?limit=10`,
+          {
+            headers: {
+              "X-AIO-Key": user.active_key,
+            },
+          }
+        );
+        const feedData = res.data.reverse();
+        setData(generateChartData(feedData));
+      } catch (e) {
+        console.log(e);
+      }
+    };
+    fetchFeedData();
   }, [user]);
 
   return (
