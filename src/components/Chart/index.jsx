@@ -14,6 +14,7 @@ import {
 import { Line } from "react-chartjs-2";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useSelector } from "react-redux";
 
 ChartJS.register(
   CategoryScale,
@@ -43,7 +44,7 @@ let cx = classNames.bind(styles);
 
 let labels = [];
 const Chart = () => {
-  const { REACT_APP_IO_USERNAME, REACT_APP_IO_KEY } = process.env;
+  const { user } = useSelector((state) => state.auth);
   const [data, setData] = useState({
     labels,
     datasets: [
@@ -60,10 +61,10 @@ const Chart = () => {
     const fetchData = async () => {
       try {
         const res = await axios.get(
-          `https://io.adafruit.com/api/v2/${REACT_APP_IO_USERNAME}/feeds/dht20-humi/data?limit=10`,
+          `https://io.adafruit.com/api/v2/${user.username}/feeds/dht20-humi/data?limit=10`,
           {
             headers: {
-              "X-AIO-Key": REACT_APP_IO_KEY,
+              "X-AIO-Key": user.active_key,
             },
           }
         );
@@ -90,7 +91,7 @@ const Chart = () => {
       }
     };
     fetchData();
-  }, []);
+  }, [user]);
 
   return (
     <div className={cx("container")}>

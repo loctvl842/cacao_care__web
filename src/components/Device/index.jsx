@@ -7,30 +7,31 @@ import { useState, useEffect, useContext } from "react";
 import { PulseLoader } from "react-spinners";
 import axios from "axios";
 import dayjs from "dayjs";
+import { useSelector } from "react-redux";
 
 let cx = classNames.bind(styles);
 
 const Device = ({ feed }) => {
-  const { REACT_APP_IO_USERNAME, REACT_APP_IO_KEY } = process.env;
+  const { user } = useSelector((state) => state.auth);
   const [value, setValue] = useState(null);
   const [createdAt, setCreatedAt] = useState("");
   const socket = useContext(SocketContext);
 
   useEffect(() => {
-    const topic = `${REACT_APP_IO_USERNAME}/feeds/${feed.key}`;
+    const topic = `${user.username}/feeds/${feed.key}`;
     socket.on(topic, (data, createdAt) => {
       setValue(data);
       setCreatedAt(createdAt);
     });
-  }, [REACT_APP_IO_USERNAME, socket, feed.key]);
+  }, [user, socket, feed.key]);
 
   useEffect(() => {
     const fetchLast = async () => {
       const res = await axios.get(
-        `/api/v2/${REACT_APP_IO_USERNAME}/feeds/${feed.key}/data/last`,
+        `/api/v2/${user.username}/feeds/${feed.key}/data/last`,
         {
           headers: {
-            "X-AIO-Key": REACT_APP_IO_KEY,
+            "X-AIO-Key": user.active_key,
           },
         }
       );
@@ -38,7 +39,7 @@ const Device = ({ feed }) => {
       setCreatedAt(res.data.created_at);
     };
     fetchLast();
-  }, [REACT_APP_IO_USERNAME, REACT_APP_IO_KEY, feed.key]);
+  }, [user, feed.key]);
 
   return (
     <div className={cx("item")}>

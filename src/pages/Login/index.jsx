@@ -4,13 +4,33 @@ import classNames from "classnames/bind";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { PulseLoader } from "react-spinners";
-import { useState } from "react";
+import { useContext, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+
+// actions
+import { authStart, authSuccess, authFail, authReset } from "~/store/authSlice";
+import { SocketContext } from "~/socket";
 
 let cx = classNames.bind(styles);
 
 const Login = () => {
   const navigate = useNavigate();
-  const [fetching, setFetching] = useState(false);
+  const dispatch = useDispatch();
+  const socket = useContext(SocketContext);
+  const { fetching, error } = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    let timeoutId;
+    socket.on("error", (msg) => {
+      dispatch(authFail(msg));
+      timeoutId = setTimeout(() => {
+        dispatch(authReset());
+      }, 3000);
+    });
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, [socket, dispatch]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -18,18 +38,20 @@ const Login = () => {
     const dataArray = [...formData];
     const input_data = Object.fromEntries(dataArray);
     try {
-      setFetching(true);
+      dispatch(authStart());
       const res = await axios.post("/api/auth/login", {
-        io_username: input_data.username,
-        io_key: input_data.active_key,
+        adafruit: {
+          io_username: input_data.username,
+          io_key: input_data.active_key,
+        },
+        socketId: socket.id,
       });
-      setFetching(false);
       if (res.data.success) {
+        dispatch(authSuccess(input_data));
         navigate("/");
       }
     } catch (e) {
-      setFetching(false);
-      console.log(e);
+      dispatch(authFail(e.response.data.error));
     }
   };
   return (
@@ -44,23 +66,30 @@ const Login = () => {
           <img src="/assets/logo/logo.png" alt="" />
         </div>
         <div className={cx("form-wrapper")}>
+          <div className={cx("message-wrapper", { visible: error !== "" })}>
+            <div className={cx("message")}>
+              <p>{error}</p>
+            </div>
+          </div>
           <form className={cx("form-data")} onSubmit={handleSubmit}>
-            <div className={cx("form-control")}>
+            <label htmlFor="username" className={cx("form-control")}>
               <input
                 className="form-control"
+                id="username"
                 name="username"
                 type="text"
                 placeholder="Username"
               />
-            </div>
-            <div className={cx("form-control")}>
+            </label>
+            <label htmlFor="active_key" className={cx("form-control")}>
               <input
                 className="form-control"
+                id="active_key"
                 name="active_key"
                 type="text"
                 placeholder="Active Key"
               />
-            </div>
+            </label>
             <div className={cx("submit-btn-wrapper")}>
               <button type="submit" className={cx("submit-btn")}>
                 <PulseLoader color="#fff" size={5} loading={fetching} />
