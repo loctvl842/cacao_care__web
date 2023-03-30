@@ -12,9 +12,8 @@
     position: absolute;
     left: 0;
     transform: translateX(-100%);
-    // left: 0;
     border-radius: 10px ;
-    height: 100%;
+    min-height: 100%;
     box-shadow: 5px 5px 15px 5px #aaa;
     &.visible {
       transform: translateX(0);
