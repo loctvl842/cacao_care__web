@@ -4,30 +4,36 @@ import classNames from "classnames/bind";
 // components
 import { Device } from "~/components";
 
+// actions
+import { feedSet, feedSetCurrentById } from "~/store/feedSlice";
+
 import { v4 as uuidv4 } from "uuid";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import axios from "axios";
-import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
 let cx = classNames.bind(styles);
 
 const Rightbar = () => {
-  const navigate = useNavigate();
-  const [feeds, setFeeds] = useState([]);
+  const dispatch = useDispatch();
+  const feeds = useSelector((state) => state.feed.feeds);
   const { user } = useSelector((state) => state.auth);
+
+  const handleFeedClick = (feed) => {
+    dispatch(feedSetCurrentById(feed.id));
+  };
+
   useEffect(() => {
-    if (user === null) navigate("/login");
     const fetchFeeds = async () => {
       try {
         const res = await axios.get(`/api/v2/${user.username}/feeds`);
-        setFeeds(res.data);
+        dispatch(feedSet(res.data));
       } catch (e) {
         console.log(e);
       }
     };
     fetchFeeds();
-  }, [user, navigate]);
+  }, [user, dispatch]);
   return (
     <div className={cx("container")}>
       <div className={cx("devices")}>
@@ -36,7 +42,9 @@ const Rightbar = () => {
         </div>
         <ul className={cx("list")}>
           {feeds.map((feed) => (
-            <Device feed={feed} key={uuidv4()} />
+            <li key={uuidv4()} onClick={() => handleFeedClick(feed)}>
+              <Device feed={feed} />
+            </li>
           ))}
         </ul>
       </div>
