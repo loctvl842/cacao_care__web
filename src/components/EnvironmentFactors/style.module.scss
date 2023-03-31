@@ -1,0 +1,36 @@
+.devices {
+  background-color: #fbfbfb;
+  border-radius: 10px;
+  .title {
+    padding-top: 17px;
+    padding-left: 15px;
+    h1 {
+      font-weight: 400;
+      font-size: 26px;
+      line-height: 40px;
+    }
+  }
+  .list {
+    overflow-y: scroll;
+    max-height: 420px;
+    padding: 20px;
+    list-style-type: none;
+    scroll-margin: 30px;
+    &::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    &::-webkit-scrollbar-track {
+      display: none;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      border-radius: 50px;
+      background-color: transparent;
+      transition: background-color 0.9s ease-out;
+    }
+    &:hover::-webkit-scrollbar-thumb {
+      background-color: #aaa;
+    }
+  }
+}

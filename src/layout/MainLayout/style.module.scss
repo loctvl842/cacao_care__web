@@ -11,7 +11,55 @@ $header-height: 80px;
     z-index: 1000;
   }
   .content-wrapper {
+    display: flex;
     height: 100%;
     padding-top: $header-height;
+    position: relative;
+    background-color: #f5f5f7;
+    .sidebar-wrapper {
+      height: 100%;
+      max-width: 300px;
+      flex-shrink: 0;
+      z-index: 1;
+      flex: 1;
+      transition: all 0.6s ease;
+      height: calc(100% - $header-height);
+      @media (max-width: 1200px) {
+        background: #fff;
+        position: absolute;
+        left: 0;
+        transform: translateX(-100%);
+        border-radius: 10px;
+        &.visible {
+          box-shadow: 5px 5px 15px 5px #aaa;
+          transform: translateX(0);
+        }
+      }
+      .menu-btn {
+        position: absolute;
+        top: 20px;
+        right: 0;
+        transform: translateX(100%);
+        width: 50px;
+        height: 60px;
+        background: #fff;
+        display: none;
+        justify-content: center;
+        align-items: center;
+        border-radius: 0 50% 50% 0;
+        box-shadow: 10px 10px 30px -5px #cacaca;
+        z-index: -1;
+        &:hover {
+          background: #f7f7f7;
+          cursor: pointer;
+        }
+        @media (max-width: 1200px) {
+          display: flex;
+        }
+      }
+    }
+    .content {
+      flex: 1;
+    }
   }
 }

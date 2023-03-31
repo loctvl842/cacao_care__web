@@ -5,37 +5,44 @@ import classNames from "classnames/bind";
 import { BsHouse, BsGraphUp, BsToggleOff } from "react-icons/bs";
 import { FiSettings } from "react-icons/fi";
 import { SiAdafruit } from "react-icons/si";
-import { AiOutlineMenu } from "react-icons/ai";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+
+import { useNavigate, NavLink } from "react-router-dom";
 
 let cx = classNames.bind(styles);
 
 const Sidebar = () => {
   const navigate = useNavigate();
-  const [visible, setVisible] = useState(false);
-
-  const handleMenuBtnClick = () => {
-    setVisible((visible) => !visible);
-  };
 
   return (
-    <div className={cx("container", { visible: visible })}>
-      <div className={cx("menu-btn")} onClick={handleMenuBtnClick}>
-        <AiOutlineMenu />
-      </div>
+    <div className={cx("container")}>
       <div className={cx("menu")}>
         <div className={cx("title")}>
           <h1>Menu</h1>
         </div>
         <ul className={cx("list")}>
-          <li className={cx("item", "active")}>
-            <div className={cx("option-wrapper")}>
-              <div className={cx("icon")}>
-                <BsHouse />
-              </div>
-              <span>Overview</span>
-            </div>
+          <li className={cx("item")}>
+            <NavLink to="/">
+              {({ isActive }) => (
+                <div className={cx("option-wrapper", { active: isActive })}>
+                  <div className={cx("icon")}>
+                    <BsHouse />
+                  </div>
+                  <span>Overview</span>
+                </div>
+              )}
+            </NavLink>
+          </li>
+          <li className={cx("item")}>
+            <NavLink to="/controls">
+              {({ isActive }) => (
+                <div className={cx("option-wrapper", { active: isActive })}>
+                  <div className={cx("icon")}>
+                    <BsToggleOff />
+                  </div>
+                  <span>Controls</span>
+                </div>
+              )}
+            </NavLink>
           </li>
           <li className={cx("item")}>
             <div className={cx("option-wrapper")}>
@@ -43,14 +50,6 @@ const Sidebar = () => {
                 <BsGraphUp />
               </div>
               <span>Statistics</span>
-            </div>
-          </li>
-          <li className={cx("item")}>
-            <div className={cx("option-wrapper")}>
-              <div className={cx("icon")}>
-                <BsToggleOff />
-              </div>
-              <span>Controls</span>
             </div>
           </li>
         </ul>

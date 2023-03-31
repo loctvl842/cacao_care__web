@@ -12,7 +12,8 @@ module.exports = (app) => {
     "/api",
     createProxyMiddleware({
       // target: "http://localhost:8400/",
-      target: "https://cacao-care.herokuapp.com/",
+      // target: "https://cacao-care.herokuapp.com/",
+      target: "https://cacaocare.onrender.com/",
       changeOrigin: true,
     })
   );

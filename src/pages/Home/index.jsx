@@ -2,7 +2,7 @@ import styles from "./style.module.scss";
 import classNames from "classnames/bind";
 
 // components
-import { Sidebar, Chart, Rightbar } from "~/components";
+import { EnvironmentFactors, Chart, Chip } from "~/components";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -17,11 +17,13 @@ const Home = () => {
   return (
     <div className={cx("container")}>
       <div className={cx("wrapper")}>
-        <Sidebar />
         {user !== null && (
           <>
             <Chart />
-            <Rightbar />
+            <div className={cx("rightbar")}>
+              <EnvironmentFactors />
+              <Chip />
+            </div>
           </>
         )}
       </div>

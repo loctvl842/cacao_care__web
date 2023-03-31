@@ -1,0 +1,37 @@
+.chip {
+  margin-top: 33px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  background-color: #fff;
+  border-radius: 10px;
+  .wrapper {
+    .value-box {
+      margin-left: auto;
+      margin-right: auto;
+      margin-top: 20px;
+      width: 150px;
+      height: 150px;
+      border: 15px solid #ff8871;
+      border-radius: 50%;
+      background-color: #ffe08f;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      span {
+        font-weight: 500;
+        font-size: 30px;
+        line-height: 45px;
+      }
+    }
+    .name {
+      display: block;
+      margin-top: 19px;
+      margin-bottom: 19px;
+      line-height: 39px;
+      font-size: 25px;
+      font-weight: 500;
+      color: #000;
+    }
+  }
+}
