@@ -133,15 +133,22 @@ const Chart = () => {
 
     const topic = `${user.username}/feeds/${currentFeed.key}`;
     socket.on(topic, (data, createdAt) => {
+      console.log(topic);
+
       const newFeedData = {
         created_at: createdAt,
         value: data,
       };
-      const copiedDatas = [...datas];
-      copiedDatas.shift();
-      copiedDatas.push(newFeedData);
-      setDatas(copiedDatas);
+      setDatas((prevState) => {
+        console.log('updated')
+        const copiedDatas = prevState.slice(1);
+        copiedDatas.push(newFeedData);
+        return copiedDatas;
+      });
     });
+    return () => {
+      socket.off(topic);
+    };
   }, [user, socket, currentFeed]);
 
   return (
