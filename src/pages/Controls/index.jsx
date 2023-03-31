@@ -1,13 +1,16 @@
 import styles from "./style.module.scss";
 import classNames from "classnames/bind";
 
+// components
+import { ControlFactors } from "~/components";
+
 let cx = classNames.bind(styles);
 
 const Controls = () => {
   return (
     <div className={cx("container")}>
       <div className={cx("wrapper")}>
-        <h1>Controls page</h1>
+        <ControlFactors />
       </div>
     </div>
   );
