@@ -16,7 +16,7 @@ import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { SocketContext } from "~/socket";
-import "chartjs-adapter-date-fns";
+// import "chartjs-adapter-date-fns";
 
 let cx = classNames.bind(styles);
 
