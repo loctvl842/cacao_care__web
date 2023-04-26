@@ -7,15 +7,17 @@ import { useSelector } from "react-redux";
 
 let cx = classNames.bind(styles);
 
-const ControlFactors = () => {
-  const [fan, setFan] = useState(0);
+const ControlFactors = ({min, max, feed_key, title}) => {
+  const [value, setValue] = useState(0);
   const { user } = useSelector((state) => state.auth);
-  const handleFanSubmit = async () => {
+
+  const handleFanSubmit = async (e) => {
+    const feed_key = e.currentTarget.name
     try {
       const res = await axios.post(
-        `/api/v2/${user.username}/feeds/yolo-fan/data`,
+        `/api/v2/${user.username}/feeds/${feed_key}/data`,
         {
-          value: fan,
+          value: value,
         },
         {
           headers: {
@@ -33,16 +35,19 @@ const ControlFactors = () => {
     <div className={cx("container")}>
       <div className={cx("controller")}>
         <div className={cx("name")}>
-          <h1>YOLO FAN</h1>
+          <h1>{title}</h1>
         </div>
         <div className={cx("value-wrapper")}>
-          <h2>{fan}</h2>
+          <h2>{value}</h2>
         </div>
         <input
+          min={min}
+          max={max}
+          name={feed_key}
           type="range"
           className={cx("range")}
-          value={fan}
-          onChange={(e) => setFan(e.target.value)}
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
           onMouseUp={handleFanSubmit}
         />
       </div>
